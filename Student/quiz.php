@@ -7,14 +7,23 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Initialize session
+// DEFAULT LEVEL
+if (!isset($_SESSION['level'])) {
+    $_SESSION['level'] = 1;
+}
+
+// Initialize score + index
 if (!isset($_SESSION['score'])) {
     $_SESSION['score'] = 0;
     $_SESSION['q_index'] = 0;
 }
 
-// Get questions
-$result = $conn->query("SELECT * FROM questions");
+// Get level
+$level = $_SESSION['level'];
+
+// RANDOM QUESTIONS BY LEVEL
+$result = $conn->query("SELECT * FROM questions WHERE level=$level ORDER BY RAND() LIMIT 5");
+
 $questions = [];
 while ($row = $result->fetch_assoc()) {
     $questions[] = $row;
@@ -32,9 +41,17 @@ if (isset($_POST['answer'])) {
     exit();
 }
 
-// End quiz
+// END LEVEL
 if ($index >= count($questions)) {
-    header("Location: Result.php");
+
+    $_SESSION['level']++;
+
+    if ($_SESSION['level'] > 3) {
+        header("Location: Result.php");
+    } else {
+        $_SESSION['q_index'] = 0;
+        header("Location: Quiz.php");
+    }
     exit();
 }
 
@@ -81,6 +98,9 @@ button:hover {
 <body>
 
 <div class="card">
+
+<h3>Level <?php echo $level; ?></h3>
+
 <h2><?php echo $q['question']; ?></h2>
 
 <form method="POST">
@@ -90,6 +110,7 @@ button:hover {
 </form>
 
 <p>Score: <?php echo $_SESSION['score']; ?></p>
+
 </div>
 
 </body>
