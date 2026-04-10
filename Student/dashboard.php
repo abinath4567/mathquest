@@ -18,91 +18,80 @@ $data = $stmt->get_result()->fetch_assoc();
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dashboard</title>
+<title>MathQuest Dashboard</title>
 
 <style>
 body {
-    font-family: 'Poppins', sans-serif;
     margin: 0;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f);
+}
+
+/* FLOATING NUMBERS */
+.number {
+    position: absolute;
+    font-size: 40px;
+    font-weight: bold;
+    opacity: 0.2;
+    animation: float 10s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
 }
 
 /* HEADER */
 .header {
     text-align: center;
-    color: white;
-    padding: 40px 20px;
+    padding: 30px;
+    color: #333;
 }
 
 .header h1 {
-    margin: 0;
     font-size: 2.5em;
 }
 
-.header p {
-    margin-top: 10px;
-    font-size: 1.1em;
+/* CARD */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
 }
 
-/* POINTS BADGE */
-.points {
-    display: inline-block;
-    margin-top: 15px;
-    background: rgba(255,255,255,0.2);
-    padding: 10px 25px;
-    border-radius: 30px;
-    font-weight: bold;
-}
-
-/* MENU GRID */
-.menu {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-/* CARDS */
+/* BUTTON CARDS */
 .card {
-    padding: 30px;
+    width: 200px;
+    height: 140px;
     border-radius: 20px;
+    text-align: center;
+    padding-top: 40px;
+    font-size: 1.3em;
+    font-weight: bold;
     color: white;
     text-decoration: none;
-    text-align: center;
-    font-weight: bold;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-8px) scale(1.03);
+    transform: scale(1.1) rotate(2deg);
 }
 
-/* CARD COLORS */
-.quiz { background: linear-gradient(135deg, #ff6a00, #ee0979); }
-.challenge { background: linear-gradient(135deg, #00c6ff, #0072ff); }
-.leaderboard { background: linear-gradient(135deg, #f7971e, #ffd200); color:black; }
-.result { background: linear-gradient(135deg, #11998e, #38ef7d); }
+/* COLORS */
+.quiz { background: #ff6b6b; }
+.challenge { background: #4ecdc4; }
+.leaderboard { background: #ffe66d; color:black; }
+.result { background: #6a89cc; }
 
-/* FOOTER */
-.footer {
-    text-align: center;
-    margin: 30px;
-}
-
-.logout {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    background: rgba(0,0,0,0.3);
-    padding: 10px 20px;
-    border-radius: 10px;
-}
-
-.logout:hover {
-    background: rgba(0,0,0,0.5);
+/* POINTS */
+.points {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #444;
 }
 </style>
 
@@ -110,37 +99,36 @@ body {
 
 <body>
 
+<!-- FLOATING NUMBERS -->
+<div class="number" style="left:10%; animation-duration:12s;">1</div>
+<div class="number" style="left:30%; animation-duration:15s;">2</div>
+<div class="number" style="left:50%; animation-duration:10s;">3</div>
+<div class="number" style="left:70%; animation-duration:18s;">4</div>
+<div class="number" style="left:85%; animation-duration:14s;">5</div>
+
 <div class="header">
-    <h1>Welcome, <?php echo $data['username']; ?></h1>
-    <p>Ready to challenge your math skills?</p>
-
-    <div class="points">
-        Total Points: <?php echo $data['points']; ?>
-    </div>
+    <h1>Hi <?php echo $data['username']; ?> 👋</h1>
+    <div class="points">⭐ Points: <?php echo $data['points']; ?></div>
 </div>
 
-<div class="menu">
+<div class="container">
 
-    <a href="Quiz.php" class="card quiz">
-        Start Quiz
-    </a>
+<a href="Quiz.php" class="card quiz">
+🎮 Play Quiz
+</a>
 
-    <a href="Challenge.php" class="card challenge">
-        1 vs 1 Challenge
-    </a>
+<a href="Challenge.php" class="card challenge">
+⚔️ Challenge
+</a>
 
-    <a href="Leaderboard.php" class="card leaderboard">
-        Leaderboard
-    </a>
+<a href="Leaderboard.php" class="card leaderboard">
+🏆 Leaderboard
+</a>
 
-    <a href="Result.php" class="card result">
-        My Results
-    </a>
+<a href="Result.php" class="card result">
+📊 My Score
+</a>
 
-</div>
-
-<div class="footer">
-    <a href="SignIn.php" class="logout">Logout</a>
 </div>
 
 </body>

@@ -2,11 +2,6 @@
 include 'db.php';
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: SignIn.php");
-    exit();
-}
-
 $score = $_SESSION['score'] ?? 0;
 $user = $_SESSION['user_id'];
 
@@ -19,24 +14,36 @@ $stmt->execute();
 <html>
 <head>
 <style>
-body { font-family:Poppins; text-align:center; background:#e8f5e9; }
+body {
+    font-family:Poppins;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    text-align:center;
+}
 
-.box {
+.card {
     background:white;
-    width:300px;
+    color:black;
+    width:350px;
     margin:100px auto;
-    padding:30px;
-    border-radius:15px;
+    padding:40px;
+    border-radius:20px;
+}
+
+.score {
+    font-size:2em;
+    color:#4CAF50;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>Quiz Finished</h2>
-<p>Your Score: <?php echo $score; ?></p>
+<div class="card">
+<h2>Game Over</h2>
+<div class="score"><?php echo $score; ?></div>
 
+<a href="Quiz.php">Play Again</a><br><br>
 <a href="Dashboard.php">Back</a>
 </div>
 

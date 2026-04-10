@@ -6,6 +6,8 @@ if (!isset($_SESSION['user_score'])) {
     $_SESSION['bot_score']=0;
 }
 
+$correct = 8;
+
 if (isset($_POST['answer'])) {
 
     $correct = 8;
@@ -24,19 +26,27 @@ if (isset($_POST['answer'])) {
 <html>
 <head>
 <style>
-body { font-family:Poppins; text-align:center; background:#e8f5e9; }
+body {
+    font-family:Poppins;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    text-align:center;
+}
 
-.box {
+.card {
     background:white;
-    width:300px;
-    margin:100px auto;
+    color:black;
+    width:350px;
+    margin:80px auto;
     padding:30px;
-    border-radius:15px;
+    border-radius:20px;
 }
 
 button {
-    padding:10px 20px;
+    padding:12px 20px;
     margin:10px;
+    border:none;
+    border-radius:10px;
     background:#4CAF50;
     color:white;
     border:none;
@@ -47,7 +57,7 @@ button {
 
 <body>
 
-<div class="box">
+<div class="card">
 
 <h2>1 vs Computer</h2>
 <p>4 + 4 = ?</p>
