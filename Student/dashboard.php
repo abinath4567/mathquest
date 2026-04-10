@@ -8,149 +8,139 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT username, points FROM users WHERE user_id = ?");
+
+$stmt = $conn->prepare("SELECT username, points FROM users WHERE user_id=?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$result = $stmt->get_result();
-
-if ($row = $result->fetch_assoc()) {
-    $username = $row['username'];
-    $points = $row['points'];
-} else {
-    $username = "User";
-    $points = 0;
-}
+$data = $stmt->get_result()->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>MathQuest Dashboard</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Dashboard</title>
 
 <style>
 body {
-    background-color: #e8f5e9;
     font-family: 'Poppins', sans-serif;
     margin: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-nav {
-    background: white;
-    padding: 15px;
+/* HEADER */
+.header {
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-nav a {
-    text-decoration: none;
-    color: #555;
-    margin: 0 15px;
-    font-weight: 600;
-}
-
-nav a:hover {
-    color: #4CAF50;
-}
-
-.dashboard-hero {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
     color: white;
-    padding: 50px 20px;
-    text-align: center;
-    border-radius: 0 0 30px 30px;
+    padding: 40px 20px;
 }
 
-.welcome-text {
+.header h1 {
+    margin: 0;
     font-size: 2.5em;
-    font-weight: 700;
 }
 
-.points-display {
+.header p {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+/* POINTS BADGE */
+.points {
+    display: inline-block;
+    margin-top: 15px;
     background: rgba(255,255,255,0.2);
     padding: 10px 25px;
-    border-radius: 50px;
-    margin-top: 20px;
-}
-
-.points-count {
+    border-radius: 30px;
     font-weight: bold;
 }
 
-.menu-grid {
+/* MENU GRID */
+.menu {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    max-width: 900px;
     margin: 40px auto;
-    padding: 0 20px;
+    padding: 20px;
 }
 
-.menu-card {
-    background: white;
-    border-radius: 15px;
+/* CARDS */
+.card {
     padding: 30px;
-    text-align: center;
+    border-radius: 20px;
+    color: white;
     text-decoration: none;
-    color: #333;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 
-.menu-card:hover {
-    transform: translateY(-10px);
+.card:hover {
+    transform: translateY(-8px) scale(1.03);
 }
 
-h3 { margin: 0; }
-p { color:#777; font-size: 0.9em; }
+/* CARD COLORS */
+.quiz { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+.challenge { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+.leaderboard { background: linear-gradient(135deg, #f7971e, #ffd200); color:black; }
+.result { background: linear-gradient(135deg, #11998e, #38ef7d); }
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin: 30px;
+}
+
+.logout {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.logout:hover {
+    background: rgba(0,0,0,0.5);
+}
 </style>
 
 </head>
 
 <body>
 
-<nav>
-    <a href="Dashboard.php" style="color:#4CAF50;">Home</a>
-    <a href="Quiz.php">Quiz</a>
-    <a href="Challenge.php">1 vs 1</a>
-    <a href="Leaderboard.php">Leaderboard</a>
-    <a href="logout.php" style="color:#e74c3c;">Logout</a>
-</nav>
+<div class="header">
+    <h1>Welcome, <?php echo $data['username']; ?></h1>
+    <p>Ready to challenge your math skills?</p>
 
-<div class="dashboard-hero">
-    <h1 class="welcome-text">
-        Hello, <?php echo htmlspecialchars($username); ?>
-    </h1>
-
-    <div class="points-display">
-        Total Points: <span class="points-count"><?php echo $points; ?></span>
+    <div class="points">
+        Total Points: <?php echo $data['points']; ?>
     </div>
 </div>
 
-<div class="menu-grid">
+<div class="menu">
 
-    <a href="Quiz.php" class="menu-card">
-        <h3>Play Quiz</h3>
-        <p>Practice math questions</p>
+    <a href="Quiz.php" class="card quiz">
+        Start Quiz
     </a>
 
-    <a href="Challenge.php" class="menu-card">
-        <h3>1 vs 1 Challenge</h3>
-        <p>Compete with computer</p>
+    <a href="Challenge.php" class="card challenge">
+        1 vs 1 Challenge
     </a>
 
-    <a href="Leaderboard.php" class="menu-card">
-        <h3>Leaderboard</h3>
-        <p>See top players</p>
+    <a href="Leaderboard.php" class="card leaderboard">
+        Leaderboard
     </a>
 
-    <a href="logout.php" class="menu-card">
-        <h3>Logout</h3>
-        <p>Exit your account</p>
+    <a href="Result.php" class="card result">
+        My Results
     </a>
 
+</div>
+
+<div class="footer">
+    <a href="SignIn.php" class="logout">Logout</a>
 </div>
 
 </body>

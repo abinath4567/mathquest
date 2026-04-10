@@ -2,60 +2,77 @@
 include 'db.php';
 session_start();
 
+// LOGIN CHECK
 if (!isset($_SESSION['user_id'])) {
     header("Location: SignIn.php");
     exit();
 }
 
-// DEFAULT LEVEL
-if (!isset($_SESSION['level'])) {
-    $_SESSION['level'] = 1;
-}
+// INIT VALUES
+if (!isset($_SESSION['level'])) $_SESSION['level'] = 1;
+if (!isset($_SESSION['score'])) $_SESSION['score'] = 0;
+if (!isset($_SESSION['q_index'])) $_SESSION['q_index'] = 0;
 
-// Initialize score + index
-if (!isset($_SESSION['score'])) {
-    $_SESSION['score'] = 0;
-    $_SESSION['q_index'] = 0;
-}
-
-// Get level
 $level = $_SESSION['level'];
-
-// RANDOM QUESTIONS BY LEVEL
-$result = $conn->query("SELECT * FROM questions WHERE level=$level ORDER BY RAND() LIMIT 5");
-
-$questions = [];
-while ($row = $result->fetch_assoc()) {
-    $questions[] = $row;
-}
-
+$score = $_SESSION['score'];
 $index = $_SESSION['q_index'];
 
-// Answer check
-if (isset($_POST['answer'])) {
+// LOAD QUESTIONS ONCE PER LEVEL
+if (!isset($_SESSION['questions'])) {
+    $res = $conn->query("SELECT * FROM questions WHERE level=$level ORDER BY RAND() LIMIT 5");
+
+    $_SESSION['questions'] = [];
+
+    if ($res && $res->num_rows > 0) {
+        while ($row = $res->fetch_assoc()) {
+            $_SESSION['questions'][] = $row;
+        }
+    }
+}
+
+// SAFETY CHECK
+if (!isset($_SESSION['questions']) || count($_SESSION['questions']) == 0) {
+    echo "No questions found. Please insert questions in database.";
+    exit();
+}
+
+$questions = $_SESSION['questions'];
+
+// HANDLE ANSWER
+if (isset($_POST['answer']) && isset($questions[$index])) {
+
     if ($_POST['answer'] == $questions[$index]['correct']) {
         $_SESSION['score'] += 10;
     }
+
     $_SESSION['q_index']++;
     header("Location: Quiz.php");
     exit();
 }
 
-// END LEVEL
+// LEVEL COMPLETE
 if ($index >= count($questions)) {
 
     $_SESSION['level']++;
+    unset($_SESSION['questions']);
+    $_SESSION['q_index'] = 0;
 
     if ($_SESSION['level'] > 3) {
         header("Location: Result.php");
-    } else {
-        $_SESSION['q_index'] = 0;
-        header("Location: Quiz.php");
+        exit();
     }
+
+    header("Location: Quiz.php");
     exit();
 }
 
-$q = $questions[$index];
+// CURRENT QUESTION SAFE LOAD
+$q = $questions[$index] ?? null;
+
+if (!$q) {
+    echo "Error loading question.";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -65,51 +82,92 @@ $q = $questions[$index];
 
 <style>
 body {
-    font-family: Poppins;
-    background: #e8f5e9;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    color: white;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    font-size: 1.1em;
+}
+
+/* CARD */
+.card {
+    background: white;
+    color: #333;
+    width: 550px;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 25px;
     text-align: center;
 }
 
-.card {
-    background: white;
-    width: 400px;
-    margin: 80px auto;
-    padding: 30px;
-    border-radius: 15px;
+/* QUESTION */
+.question {
+    font-size: 1.8em;
+    margin-bottom: 25px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
+/* ANSWERS */
+.answers {
+    display: grid;
+    gap: 15px;
+}
+
+/* BUTTONS */
+.answer-btn {
+    padding: 15px;
     border: none;
-    background: #4CAF50;
-    color: white;
-    border-radius: 8px;
+    border-radius: 12px;
+    font-size: 1.1em;
     cursor: pointer;
+    font-weight: bold;
+    color: white;
 }
 
-button:hover {
-    background: #388E3C;
+/* COLORS */
+.btn1 { background: #ff4b2b; }
+.btn2 { background: #3498db; }
+.btn3 { background: #f1c40f; color:black; }
+
+.answer-btn:hover {
+    transform: scale(1.05);
 }
 </style>
+
 </head>
 
 <body>
 
+<div class="top-bar">
+    <div>Level <?php echo $level; ?></div>
+    <div>Score: <?php echo $_SESSION['score']; ?></div>
+</div>
+
 <div class="card">
 
-<h3>Level <?php echo $level; ?></h3>
+    <div class="question">
+        <?php echo htmlspecialchars($q['question']); ?>
+    </div>
 
-<h2><?php echo $q['question']; ?></h2>
+    <form method="POST" class="answers">
+        <button class="answer-btn btn1" name="answer" value="1">
+            <?php echo htmlspecialchars($q['option1']); ?>
+        </button>
 
-<form method="POST">
-<button name="answer" value="1"><?php echo $q['option1']; ?></button>
-<button name="answer" value="2"><?php echo $q['option2']; ?></button>
-<button name="answer" value="3"><?php echo $q['option3']; ?></button>
-</form>
+        <button class="answer-btn btn2" name="answer" value="2">
+            <?php echo htmlspecialchars($q['option2']); ?>
+        </button>
 
-<p>Score: <?php echo $_SESSION['score']; ?></p>
+        <button class="answer-btn btn3" name="answer" value="3">
+            <?php echo htmlspecialchars($q['option3']); ?>
+        </button>
+    </form>
 
 </div>
 
