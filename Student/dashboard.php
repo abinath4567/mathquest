@@ -117,7 +117,7 @@ body {
 🎮 Play Quiz
 </a>
 
-<a href="Challenge.php" class="card challenge">
+<a href="Challenges.php" class="card challenge">
 ⚔️ Challenge
 </a>
 

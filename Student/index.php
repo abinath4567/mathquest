@@ -1,101 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathQuest - Student Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathQuest - Student Portal</title>
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #4CAF50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive;
+    height: 100vh;
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 100%;
-        }
+/* FLOATING NUMBERS */
+.number {
+    position: absolute;
+    font-size: 50px;
+    color: white;
+    opacity: 0.15;
+    animation: float 12s infinite linear;
+}
 
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
 
-        p {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
+/* MAIN CARD */
+.container {
+    text-align: center;
+    background: rgba(255,255,255,0.95);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 450px;
+    width: 100%;
+    animation: fadeIn 1s ease;
+}
 
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-direction: column;
-        }
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
+}
 
-        .btn {
-            display: block;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+h1 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
 
-        /* Login Button */
-        .btn-login {
-            background-color: #4CAF50;
-            color: white;
-            border: 2px solid #4CAF50;
-        }
+p {
+    color: #555;
+    margin-bottom: 30px;
+}
 
-        .btn-login:hover {
-            background-color: #388E3C;
-            border-color: #388E3C;
-            transform: translateY(-2px);
-        }
+/* BUTTONS */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        /* Register Button */
-        .btn-register {
-            background-color: transparent;
-            color: #4CAF50;
-            border: 2px solid #4CAF50;
-        }
+.btn {
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
 
-        .btn-register:hover {
-            background-color: #e8f5e9;
-            transform: translateY(-2px);
-        }
-    </style>
+/* LOGIN */
+.btn-login {
+    background: #ff6b6b;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #e63946;
+    transform: scale(1.05);
+}
+
+/* REGISTER */
+.btn-register {
+    background: #4dabf7;
+    color: white;
+}
+
+.btn-register:hover {
+    background: #1c7ed6;
+    transform: scale(1.05);
+}
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>MathQuest</h1>
-        <p>Gamified Learning System for Primary School Mathematics</p>
+<!-- FLOATING NUMBERS -->
+<div class="number" style="left:10%;">1</div>
+<div class="number" style="left:30%;">2</div>
+<div class="number" style="left:50%;">3</div>
+<div class="number" style="left:70%;">4</div>
+<div class="number" style="left:85%;">5</div>
 
-        <div class="action-buttons">
+<div class="container">
+    <h1>🎮 MathQuest</h1>
+    <p>Fun & Interactive Math Learning for Kids 🚀</p>
 
-            <a href="SignIn.php" class="btn btn-login">
-                Login to Dashboard
-            </a>
+    <div class="action-buttons">
+        <a href="SignIn.php" class="btn btn-login">
+            🎯 Start Playing
+        </a>
 
-            <a href="Signup.php" class="btn btn-register">
-                Register New Account
-            </a>
-
-        </div>
+        <a href="Signup.php" class="btn btn-register">
+            📝 Create Account
+        </a>
     </div>
+</div>
 
 </body>
 </html>
