@@ -1,55 +1,139 @@
 <?php
-include 'db.php';
 session_start();
 
-$score = $_SESSION['score'] ?? 0;
-$user = $_SESSION['user_id'];
+/* DB CONNECTION */
+$conn = new mysqli("localhost", "root", "", "mathquest");
 
-$stmt = $conn->prepare("UPDATE users SET points = points + ? WHERE user_id=?");
-$stmt->bind_param("ii",$score,$user);
-$stmt->execute();
+if ($conn->connect_error) {
+    die("DB Error");
+}
+
+/* LOGIN CHECK */
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../SignIn.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+/* GET SCORE (from session or GET) */
+$score = isset($_SESSION['score']) ? $_SESSION['score'] : 0;
+
+/* OPTIONAL: UPDATE POINTS */
+$conn->query("UPDATE users SET points = points + $score WHERE user_id=$user_id");
+
+/* GET USER */
+$user = $conn->query("SELECT username, points FROM users WHERE user_id=$user_id")->fetch_assoc();
+
+/* RESULT MESSAGE */
+if ($score >= 80) {
+    $message = "🏆 Excellent!";
+} elseif ($score >= 50) {
+    $message = "👍 Good Job!";
+} else {
+    $message = "😅 Try Again!";
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
+<title>Quiz Result</title>
+
 <style>
 body {
-    font-family:Poppins;
-    background: linear-gradient(135deg,#141e30,#243b55);
-    color:white;
-    text-align:center;
+    margin:0;
+    font-family:'Poppins', sans-serif;
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-.card {
+/* MAIN BOX */
+.container {
     background:white;
-    color:black;
-    width:350px;
-    margin:100px auto;
-    padding:40px;
+    padding:50px;
     border-radius:20px;
+    text-align:center;
+    width:500px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    animation: pop 0.5s ease;
 }
 
+/* ANIMATION */
+@keyframes pop {
+    0% { transform: scale(0.7); opacity:0; }
+    100% { transform: scale(1); opacity:1; }
+}
+
+h1 {
+    margin-bottom:10px;
+}
+
+/* SCORE */
 .score {
-    font-size:2em;
+    font-size:50px;
+    font-weight:bold;
     color:#4CAF50;
+    margin:20px 0;
+}
+
+/* MESSAGE */
+.message {
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+/* USER INFO */
+.user {
+    margin-bottom:20px;
+    color:#555;
+}
+
+/* BUTTON */
+.btn {
+    display:inline-block;
+    margin:10px;
+    padding:12px 25px;
+    background:#4CAF50;
+    color:white;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn:hover {
+    background:#388E3C;
+    transform:scale(1.05);
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-<h2>Game Over</h2>
-<div class="score"><?php echo $score; ?></div>
+<div class="container">
 
-<a href="Quiz.php">Play Again</a><br><br>
-<a href="Dashboard.php">Back</a>
+<h1>🎯 Quiz Result</h1>
+
+<div class="user">
+Hello <?php echo htmlspecialchars($user['username']); ?>
+</div>
+
+<div class="score">
+<?php echo $score; ?> Points
+</div>
+
+<div class="message">
+<?php echo $message; ?>
+</div>
+
+<a href="quiz.php" class="btn">Play Again</a>
+<a href="Dashboard.php" class="btn">Dashboard</a>
+
 </div>
 
 </body>
 </html>
-
-<?php
-unset($_SESSION['score'],$_SESSION['q_index'],$_SESSION['level'],$_SESSION['questions']);
-?>
