@@ -114,11 +114,11 @@ p {
 
     <div class="action-buttons">
         <a href="SignIn.php" class="btn btn-login">
-            🎯 Start Playing
+             Start Playing
         </a>
 
         <a href="Signup.php" class="btn btn-register">
-            📝 Create Account
+             Create Account
         </a>
     </div>
 </div>

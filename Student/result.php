@@ -22,9 +22,9 @@ $current_xp = $total_points % 100;
 $xp_needed = 100;
 
 /* RESULT MESSAGE */
-if($score >= 80) $msg = "🏆 Amazing!";
-elseif($score >= 50) $msg = "👍 Good Job!";
-else $msg = "😅 Try Again!";
+if($score >= 80) $msg = " Amazing!";
+elseif($score >= 50) $msg = " Good Job!";
+else $msg = " Try Again!";
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +116,7 @@ body {
 
 <div class="card">
 
-<h2>🎯 Game Result</h2>
+<h2> Game Result</h2>
 
 <div class="score"><?php echo $score; ?></div>
 

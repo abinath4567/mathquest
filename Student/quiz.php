@@ -203,7 +203,7 @@ function checkAnswer(selected, correct){
         popup.innerHTML="🎉 Correct!";
         popup.style.color="green";
     }else{
-        popup.innerHTML="❌ Wrong!";
+        popup.innerHTML=" Wrong!";
         popup.style.color="red";
     }
 

@@ -109,7 +109,7 @@ tr:hover {
 
 <div class="container">
 
-<h1>🏆 Leaderboard</h1>
+<h1> Leaderboard</h1>
 
 <table>
 <tr>

@@ -107,8 +107,8 @@ body {
 <div class="number" style="left:85%; animation-duration:14s;">5</div>
 
 <div class="header">
-    <h1>Hi <?php echo $data['username']; ?> 👋</h1>
-    <div class="points">⭐ Points: <?php echo $data['points']; ?></div>
+    <h1>Hi <?php echo $data['username']; ?> </h1>
+    <div class="points"> Points: <?php echo $data['points']; ?></div>
 </div>
 
 <div class="container">
