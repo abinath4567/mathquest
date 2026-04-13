@@ -1,3 +1,44 @@
+<?php
+session_start();
+include 'db.php';
+
+// default user (safe fallback)
+$user_id = $_SESSION['user_id'] ?? 1;
+
+/* HANDLE COMPLETE */
+if (isset($_POST['complete'])) {
+
+    if (!isset($_POST['cid']) || empty($_POST['cid'])) {
+        exit;
+    }
+
+    $cid = (int)$_POST['cid'];
+
+    // get reward
+    $res = $conn->query("SELECT reward_points FROM challenges WHERE challenge_id=$cid");
+
+    if ($res && $res->num_rows > 0) {
+        $row = $res->fetch_assoc();
+        $points = $row['reward_points'];
+
+        // add points to user
+        $conn->query("
+            UPDATE users 
+            SET points = points + $points 
+            WHERE user_id = $user_id
+        ");
+
+        $_SESSION['last_done'] = $cid;
+    }
+
+    header("Location: challenges.php");
+    exit();
+}
+
+/* GET CHALLENGES (ONLY ACTIVE ONES) */
+$result = $conn->query("SELECT * FROM challenges WHERE status = 'active'");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,107 +46,56 @@
 
 <style>
 body {
-    margin:0;
-    font-family:'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    min-height:100vh;
+    font-family: Poppins;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    text-align:center;
 }
 
-/* MAIN CONTAINER */
 .container {
-    max-width: 900px;
-    margin: 50px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    text-align: center;
+    background:white;
+    color:black;
+    width:450px;
+    margin:70px auto;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-/* TITLE */
-h1 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* USER INFO */
-.user {
-    font-weight: bold;
-    margin-bottom: 25px;
-    color: #555;
-}
-
-/* GRID */
-.challenge-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* CARD */
 .challenge {
-    background: linear-gradient(135deg, #f6f9ff, #eef1ff);
-    padding: 20px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.3s;
-    border: 2px solid transparent;
+    background:#f5f5f5;
+    padding:15px;
+    margin:15px 0;
+    border-radius:12px;
+    text-align:left;
 }
 
-.challenge:hover {
-    transform: translateY(-5px);
-    border-color: #667eea;
-}
-
-/* TEXT */
-.challenge strong {
-    font-size: 18px;
-    color: #333;
+.challenge h3 {
+    margin:0;
 }
 
 .challenge p {
-    margin: 5px 0;
-    color: #666;
-    font-size: 14px;
+    margin:5px 0;
+    color:#555;
 }
 
-/* BUTTON */
-.btn {
-    padding: 10px 18px;
-    background: linear-gradient(135deg, #4CAF50, #2ecc71);
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
+button {
+    margin-top:10px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+button:hover {
+    background:#2e7d32;
 }
 
-/* COMPLETED */
 .done {
-    background: gray;
-    pointer-events: none;
-}
-
-/* BACK BUTTON */
-.back {
-    margin-top: 30px;
-    display: inline-block;
-    padding: 12px 25px;
-    background: #333;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.back:hover {
-    background: black;
+    background:#ccc !important;
+    cursor:not-allowed;
 }
 </style>
 </head>
@@ -113,43 +103,48 @@ h1 {
 <body>
 
 <div class="container">
+<h2>🎯 Challenges</h2>
 
-<h1>🎯 Challenges</h1>
+<?php
+if ($result && $result->num_rows > 0) {
 
-<div class="user">
-Hello <?php echo htmlspecialchars($user['username']); ?> |
-Points: <?php echo $user['points']; ?>
-</div>
+    while($row = $result->fetch_assoc()) {
 
-<div class="challenge-list">
+        $cid = $row['challenge_id'];
+        $title = $row['title'];
+        $desc = $row['description'];
+        $points = $row['reward_points'];
 
-<?php while ($c = $challenges->fetch_assoc()) { 
+        $isDone = ($_SESSION['last_done'] ?? 0) == $cid;
 
-    $cid = $c['challenge_id'];
+        echo "
+        <div class='challenge'>
+            <h3>$title</h3>
+            <p>$desc</p>
+            <p><b>Reward:</b> $points XP</p>
+        ";
 
-    $doneCheck = $conn->query("SELECT * FROM user_challenges WHERE user_id=$user_id AND challenge_id=$cid");
-    $done = ($doneCheck && $doneCheck->num_rows > 0);
+        if ($isDone) {
+            echo "<button class='done' disabled>✅ Completed</button>";
+        } else {
+            echo "
+            <form method='POST'>
+                <input type='hidden' name='cid' value='$cid'>
+                <button name='complete'>Complete</button>
+            </form>
+            ";
+        }
+
+        echo "</div>";
+    }
+
+} else {
+    echo "<p>No active challenges available</p>";
+}
 ?>
 
-<div class="challenge">
-    <div>
-        <strong><?php echo htmlspecialchars($c['title']); ?></strong>
-        <p><?php echo htmlspecialchars($c['description']); ?></p>
-        <p><b>Reward:</b> <?php echo $c['reward_points']; ?> pts</p>
-    </div>
-
-    <?php if ($done) { ?>
-        <span class="btn done">Completed</span>
-    <?php } else { ?>
-        <a href="challenges.php?complete=<?php echo $cid; ?>" class="btn">Complete</a>
-    <?php } ?>
-</div>
-
-<?php } ?>
-
-</div>
-
-<a href="Dashboard.php" class="back">← Back to Dashboard</a>
+<br>
+<a href="dashboard.php">⬅ Back</a>
 
 </div>
 
