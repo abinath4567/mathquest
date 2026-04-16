@@ -1,0 +1,133 @@
+/* GENERAL */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #e8f5e9;
+    margin: 0;
+    padding: 0;
+}
+
+/* NAVBAR */
+nav {
+    background: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+nav a {
+    text-decoration: none;
+    color: #555;
+    margin: 0 15px;
+    font-weight: 600;
+}
+
+nav a:hover {
+    color: #4CAF50;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero h1 {
+    font-size: 2.8em;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.1em;
+}
+
+/* BUTTON */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: white;
+    color: #2E7D32;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #f1f1f1;
+}
+
+/* CONTAINER */
+.container {
+    width: 350px;
+    margin: 80px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* BUTTON FORM */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #388E3C;
+}
+
+/* CARD */
+.card {
+    background: white;
+    width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* TABLE */
+.table-box {
+    background: white;
+    width: 500px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #4CAF50;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+}
