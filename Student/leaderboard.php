@@ -10,6 +10,11 @@ if ($conn->connect_error) {
 
 /* GET USERS SORTED BY POINTS */
 $result = $conn->query("SELECT username, points FROM users ORDER BY points DESC");
+
+$players = [];
+while($row = $result->fetch_assoc()){
+    $players[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,125 +26,174 @@ $result = $conn->query("SELECT username, points FROM users ORDER BY points DESC"
 body {
     margin:0;
     font-family:'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
 }
 
-/* MAIN */
-.container {
-    max-width: 900px;
-    margin: 50px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    text-align: center;
+/* TITLE */
+h1{
+    text-align:center;
+    margin-top:30px;
+    font-size:2.5em;
 }
 
-h1 {
-    margin-bottom: 20px;
+/* PODIUM */
+.podium{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:20px;
+    margin:40px 0;
+}
+
+.podium .card{
+    width:150px;
+    text-align:center;
+    border-radius:15px;
+    padding:20px;
+    color:black;
+    font-weight:bold;
+    animation: pop 0.6s ease;
+}
+
+@keyframes pop{
+    from{transform:scale(0);}
+    to{transform:scale(1);}
+}
+
+.first{
+    background: gold;
+    height:200px;
+    box-shadow:0 0 20px gold;
+}
+
+.second{
+    background: silver;
+    height:160px;
+}
+
+.third{
+    background:#cd7f32;
+    height:140px;
+}
+
+.name{
+    margin-top:10px;
+}
+
+.points{
+    font-size:1.2em;
 }
 
 /* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 18px;
+.table-box{
+    background:white;
+    color:black;
+    width:800px;
+    margin:30px auto;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
-th {
-    background: #333;
-    color: white;
-    padding: 15px;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+th{
+    background:#333;
+    color:white;
+    padding:15px;
 }
 
-/* HOVER */
-tr:hover {
-    background: #f5f5f5;
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
 }
 
-/* TOP 3 STYLES */
-.rank-1 {
-    background: #fff3cd !important;
-    font-weight: bold;
+tr:hover{
+    background:#f9f9f9;
 }
 
-.rank-2 {
-    background: #e2e3e5 !important;
+/* CURRENT USER HIGHLIGHT */
+.me{
+    background:#d4edda !important;
+    font-weight:bold;
 }
-
-.rank-3 {
-    background: #f8d7da !important;
-}
-
-/* BADGE */
-.badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    color: white;
-    font-weight: bold;
-}
-
-.gold { background: gold; color:black; }
-.silver { background: silver; color:black; }
-.bronze { background: #cd7f32; }
 
 /* BACK BUTTON */
-.back {
-    margin-top: 30px;
-    display: inline-block;
-    padding: 12px 25px;
-    background: #333;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
+.back{
+    display:block;
+    width:200px;
+    margin:30px auto;
+    text-align:center;
+    padding:12px;
+    background:#222;
+    color:white;
+    border-radius:10px;
+    text-decoration:none;
 }
 
-.back:hover {
-    background: black;
+.back:hover{
+    background:black;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>🏆 Leaderboard</h1>
 
-<h1> Leaderboard</h1>
+<!-- PODIUM TOP 3 -->
+<div class="podium">
+
+<?php if(isset($players[1])){ ?>
+<div class="card second">
+    🥈
+    <div class="name"><?php echo $players[1]['username']; ?></div>
+    <div class="points"><?php echo $players[1]['points']; ?></div>
+</div>
+<?php } ?>
+
+<?php if(isset($players[0])){ ?>
+<div class="card first">
+    🥇
+    <div class="name"><?php echo $players[0]['username']; ?></div>
+    <div class="points"><?php echo $players[0]['points']; ?></div>
+</div>
+<?php } ?>
+
+<?php if(isset($players[2])){ ?>
+<div class="card third">
+    🥉
+    <div class="name"><?php echo $players[2]['username']; ?></div>
+    <div class="points"><?php echo $players[2]['points']; ?></div>
+</div>
+<?php } ?>
+
+</div>
+
+<!-- FULL TABLE -->
+<div class="table-box">
 
 <table>
 <tr>
-    <th>Rank</th>
+    <th>#</th>
     <th>Username</th>
     <th>Points</th>
 </tr>
 
 <?php
 $rank = 1;
-while($row = $result->fetch_assoc()) {
+$currentUser = $_SESSION['username'] ?? "";
 
-    $class = "";
-    $badge = "";
+foreach($players as $row){
 
-    if ($rank == 1) {
-        $class = "rank-1";
-        $badge = "<span class='badge gold'>1</span>";
-    } elseif ($rank == 2) {
-        $class = "rank-2";
-        $badge = "<span class='badge silver'>2</span>";
-    } elseif ($rank == 3) {
-        $class = "rank-3";
-        $badge = "<span class='badge bronze'>3</span>";
-    } else {
-        $badge = $rank;
-    }
+    $highlight = ($row['username'] == $currentUser) ? "me" : "";
 
-    echo "<tr class='$class'>
-            <td>$badge</td>
+    echo "<tr class='$highlight'>
+            <td>$rank</td>
             <td>{$row['username']}</td>
             <td>{$row['points']}</td>
           </tr>";
@@ -149,6 +203,8 @@ while($row = $result->fetch_assoc()) {
 ?>
 
 </table>
+
+</div>
 
 <a href="Dashboard.php" class="back">← Back to Dashboard</a>
 

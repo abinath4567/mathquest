@@ -1,7 +1,7 @@
 /* GENERAL */
 body {
     font-family: 'Poppins', sans-serif;
-    background: #e8f5e9;
+    background: linear-gradient(135deg,#e8f5e9,#d0f0d6);
     margin: 0;
     padding: 0;
 }
@@ -11,7 +11,9 @@ nav {
     background: white;
     padding: 15px;
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 nav a {
@@ -19,67 +21,79 @@ nav a {
     color: #555;
     margin: 0 15px;
     font-weight: 600;
+    transition: 0.3s;
 }
 
 nav a:hover {
     color: #4CAF50;
+    transform: scale(1.1);
 }
 
 /* HERO */
 .hero {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    background: linear-gradient(135deg,#4CAF50,#2E7D32);
     color: white;
     text-align: center;
-    padding: 80px 20px;
+    padding: 90px 20px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .hero h1 {
-    font-size: 2.8em;
+    font-size: 3em;
     margin-bottom: 10px;
 }
 
 .hero p {
-    font-size: 1.1em;
+    font-size: 1.2em;
+    opacity: 0.9;
 }
 
 /* BUTTON */
 .btn {
     display: inline-block;
     margin-top: 20px;
-    padding: 12px 25px;
+    padding: 12px 28px;
     background: white;
     color: #2E7D32;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
     background: #f1f1f1;
+    transform: translateY(-3px);
 }
 
 /* CONTAINER */
 .container {
-    width: 350px;
+    width: 360px;
     margin: 80px auto;
     background: white;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     text-align: center;
+    animation: fadeIn 0.5s ease;
 }
 
 /* INPUT */
 input {
     width: 100%;
     padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
+    margin: 12px 0;
+    border-radius: 10px;
     border: 1px solid #ccc;
+    transition: 0.3s;
 }
 
 input:focus {
     border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76,175,80,0.3);
     outline: none;
 }
 
@@ -87,47 +101,73 @@ input:focus {
 button {
     width: 100%;
     padding: 12px;
-    background: #4CAF50;
+    background: linear-gradient(135deg,#4CAF50,#2ecc71);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #388E3C;
+    transform: scale(1.05);
+    background: linear-gradient(135deg,#43a047,#2ecc71);
 }
 
 /* CARD */
 .card {
     background: white;
-    width: 400px;
+    width: 420px;
+    margin: 80px auto;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    animation: fadeIn 0.5s ease;
+}
+
+/* TABLE BOX */
+.table-box {
+    background: white;
+    width: 650px;
     margin: 80px auto;
     padding: 30px;
-    border-radius: 15px;
-    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
 }
 
 /* TABLE */
-.table-box {
-    background: white;
-    width: 500px;
-    margin: 80px auto;
-    padding: 30px;
-    border-radius: 15px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 16px;
 }
 
 th {
-    background: #4CAF50;
+    background: linear-gradient(135deg,#4CAF50,#2E7D32);
     color: white;
+    padding: 14px;
 }
 
-th, td {
+td {
     padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ROW HOVER */
+tr:hover {
+    background: #f9f9f9;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

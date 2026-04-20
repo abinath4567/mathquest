@@ -86,9 +86,22 @@ $progress = (($index + 1) / $total) * 100;
 <style>
 body {
     margin:0;
-    font-family:Poppins;
-    background: radial-gradient(circle,#1a1a2e,#16213e);
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg,#1f1c2c,#928dab);
     color:white;
+    overflow:hidden;
+}
+
+/* FLOATING ICONS */
+.bg {
+    position:absolute;
+    font-size:40px;
+    opacity:0.1;
+    animation: float 10s linear infinite;
+}
+@keyframes float {
+    from {transform: translateY(100vh);}
+    to {transform: translateY(-10vh);}
 }
 
 /* TOP BAR */
@@ -97,22 +110,26 @@ body {
     justify-content:space-between;
     padding:20px;
     font-weight:bold;
+    font-size:1.1em;
 }
 
 /* TIMER */
-#time {
-    color:#ff5252;
+.timer {
+    background:red;
+    padding:5px 12px;
+    border-radius:10px;
 }
 
 /* PROGRESS */
 .progress-bar {
-    height:10px;
+    height:8px;
     background:#333;
 }
 .progress-fill {
     height:100%;
-    background:#4CAF50;
+    background:linear-gradient(to right,#00f260,#0575e6);
     width:<?php echo $progress; ?>%;
+    transition:0.4s;
 }
 
 /* CARD */
@@ -120,17 +137,30 @@ body {
     background:white;
     color:black;
     width:650px;
-    margin:50px auto;
+    margin:40px auto;
     padding:30px;
     border-radius:25px;
     text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,0.5);
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1;}
+}
+
+/* QUESTION */
+.question {
+    font-size:1.8em;
+    margin-bottom:25px;
 }
 
 /* BUTTON */
 .btn {
     padding:15px;
     margin:10px;
-    width:80%;
+    width:85%;
     border:none;
     border-radius:15px;
     font-size:1.2em;
@@ -138,10 +168,14 @@ body {
     color:white;
     transition:0.2s;
 }
-.btn:hover { transform:scale(1.05); }
 
-.red{background:#ff6b6b;}
-.blue{background:#4dabf7;}
+.btn:hover {
+    transform:scale(1.08);
+}
+
+/* COLORS */
+.red{background:#ff4d4d;}
+.blue{background:#339af0;}
 .yellow{background:#ffd43b;color:black;}
 
 /* POPUP */
@@ -149,34 +183,23 @@ body {
     position:fixed;
     top:40%;
     left:50%;
-    transform:translate(-50%,-50%);
+    transform:translate(-50%,-50%) scale(0);
     background:white;
     color:black;
     padding:30px;
     border-radius:20px;
-    display:none;
-}
-
-/* CONFETTI */
-#confetti {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    pointer-events:none;
+    font-size:1.5em;
+    transition:0.3s;
 }
 </style>
 </head>
 
 <body>
 
-<!-- SOUNDS -->
-<audio id="correctSound" src="https://pixabay.com/sound-effects/film-special-effects-wrong-answer-129254/"></audio>
-<audio id="wrongSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
-<audio id="timeoutSound" src="https://www.soundjay.com/buttons/sounds/button-2.mp3"></audio>
-
-<canvas id="confetti"></canvas>
+<!-- FLOATING -->
+<div class="bg" style="left:10%">➕</div>
+<div class="bg" style="left:50%">➖</div>
+<div class="bg" style="left:80%">✖</div>
 
 <div class="progress-bar">
 <div class="progress-fill"></div>
@@ -185,25 +208,30 @@ body {
 <div class="top">
 <div>Level <?php echo $level; ?></div>
 <div>Score: <?php echo $_SESSION['score']; ?></div>
-<div>⏱ <span id="time">10</span>s</div>
+<div class="timer">⏱ <span id="time">10</span></div>
 </div>
 
 <div class="card">
 
-<h2><?php echo htmlspecialchars($q['question']); ?></h2>
+<div class="question">
+<?php echo htmlspecialchars($q['question']); ?>
+</div>
 
 <form method="POST" id="quizForm">
 
-<button type="button" class="btn red" onclick="check(1,<?php echo $q['correct'];?>)">
-<?php echo $q['option1']; ?>
+<button type="button" class="btn red"
+onclick="check(1,<?php echo $q['correct'];?>)">
+<?php echo htmlspecialchars($q['option1']); ?>
 </button>
 
-<button type="button" class="btn blue" onclick="check(2,<?php echo $q['correct'];?>)">
-<?php echo $q['option2']; ?>
+<button type="button" class="btn blue"
+onclick="check(2,<?php echo $q['correct'];?>)">
+<?php echo htmlspecialchars($q['option2']); ?>
 </button>
 
-<button type="button" class="btn yellow" onclick="check(3,<?php echo $q['correct'];?>)">
-<?php echo $q['option3']; ?>
+<button type="button" class="btn yellow"
+onclick="check(3,<?php echo $q['correct'];?>)">
+<?php echo htmlspecialchars($q['option3']); ?>
 </button>
 
 <input type="hidden" name="answer" id="ans">
@@ -215,28 +243,11 @@ body {
 <div class="popup" id="popup"></div>
 
 <script>
-// TIMER
-let time = 10;
-let timer = setInterval(()=>{
-    time--;
-    document.getElementById("time").innerText = time;
+// SOUND
+let correctSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+let wrongSound = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
 
-    if(time <= 0){
-        clearInterval(timer);
-        document.getElementById("timeoutSound").play();
-
-        let p = document.getElementById("popup");
-        p.innerHTML = "⏰ Time's Up!";
-        p.style.display = "block";
-
-        setTimeout(()=>{
-            document.getElementById("quizForm").submit();
-        },1000);
-    }
-},1000);
-
-
-// CHECK ANSWER
+// CHECK
 function check(sel, correct){
     clearInterval(timer);
 
@@ -245,16 +256,14 @@ function check(sel, correct){
     if(sel == correct){
         p.innerHTML="🎉 Correct!";
         p.style.color="green";
-        document.getElementById("correctSound").play();
-        confetti();
+        correctSound.play();
     } else {
         p.innerHTML="❌ Wrong!";
         p.style.color="red";
-        document.getElementById("wrongSound").play();
+        wrongSound.play();
     }
 
-    p.style.display="block";
-
+    p.style.transform="translate(-50%,-50%) scale(1)";
     document.getElementById("ans").value = sel;
 
     setTimeout(()=>{
@@ -262,48 +271,17 @@ function check(sel, correct){
     },1000);
 }
 
+// TIMER
+let time = 10;
+let t = setInterval(()=>{
+    time--;
+    document.getElementById("time").innerText = time;
 
-// CONFETTI
-function confetti(){
-    let canvas = document.getElementById("confetti");
-    let ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let pieces = [];
-
-    for(let i=0;i<100;i++){
-        pieces.push({
-            x: Math.random()*canvas.width,
-            y: Math.random()*canvas.height,
-            size: Math.random()*5+2,
-            speed: Math.random()*3+2
-        });
+    if(time <= 0){
+        clearInterval(t);
+        document.getElementById("quizForm").submit();
     }
-
-    function draw(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        pieces.forEach(p=>{
-            ctx.fillStyle = "hsl("+Math.random()*360+",100%,50%)";
-            ctx.fillRect(p.x,p.y,p.size,p.size);
-            p.y += p.speed;
-
-            if(p.y > canvas.height){
-                p.y = 0;
-            }
-        });
-
-        requestAnimationFrame(draw);
-    }
-
-    draw();
-
-    setTimeout(()=>{
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-    },1000);
-}
+},1000);
 </script>
 
 </body>
