@@ -11,7 +11,9 @@ if (isset($_POST['signup'])) {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $role = $_POST['role'];
+    
+    // SET DEFAULT ROLE HERE
+    $role = "Student";
 
     // Check if username already exists
     $check = "SELECT * FROM users WHERE username='$username'";
@@ -61,7 +63,7 @@ if (isset($_POST['signup'])) {
             margin-bottom: 20px;
         }
 
-        input, select {
+        input {
             width: 90%;
             padding: 10px;
             margin: 10px 0;
@@ -107,17 +109,11 @@ if (isset($_POST['signup'])) {
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
 
-        <select name="role" required>
-            <option value="">Select Role</option>
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-            
-        </select>
+        <!-- ROLE REMOVED -->
 
         <button type="submit" name="signup">Sign Up</button>
     </form>
 
-    <!-- Message -->
     <?php if($message != ""): ?>
         <div class="msg <?php echo ($message == 'Signup successful! You can login now.') ? 'success' : ''; ?>">
             <?php echo $message; ?>
