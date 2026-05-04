@@ -111,15 +111,16 @@ if (isset($_POST['signup'])) {
             <option value="">Select Role</option>
             <option value="Student">Student</option>
             <option value="Teacher">Teacher</option>
+            <option value="Admin">Admin</option>
             
         </select>
 
-        <button type="submit" name="signup">Sign Up</button>
+        <button type="submit" name="sign up">Sign Up</button>
     </form>
 
     <!-- Message -->
     <?php if($message != ""): ?>
-        <div class="msg <?php echo ($message == 'Signup successful! You can login now.') ? 'success' : ''; ?>">
+        <div class="msg <?php echo ($message == 'Sign up successful! You can login now.') ? 'success' : ''; ?>">
             <?php echo $message; ?>
         </div>
     <?php endif; ?>

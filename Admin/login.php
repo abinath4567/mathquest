@@ -5,7 +5,6 @@
 <head>
     <title>MathQuest Login</title>
 
-```
 <style>
     body {
         font-family: Arial;
@@ -40,7 +39,7 @@
         cursor: pointer;
     }
 </style>
-```
+
 
 </head>
 
