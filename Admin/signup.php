@@ -25,7 +25,7 @@ if (isset($_POST['signup'])) {
 
         // Insert user
         $sql = "INSERT INTO users (username, password, role)
-                VALUES ('$username', '$password', '$role')";
+                VALUES ('$username', '$password', '$Admin')";
 
         if ($conn->query($sql) === TRUE) {
             $message = "Sign up successful! You can login now.";
