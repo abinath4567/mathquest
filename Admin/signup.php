@@ -28,7 +28,7 @@ if (isset($_POST['signup'])) {
                 VALUES ('$username', '$password', '$role')";
 
         if ($conn->query($sql) === TRUE) {
-            $message = "Signup successful! You can login now.";
+            $message = "Sign up successful! You can login now.";
         } else {
             $message = "Error: " . $conn->error;
         }
@@ -109,13 +109,11 @@ if (isset($_POST['signup'])) {
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
 
-        <!-- ROLE REMOVED -->
-
         <button type="submit" name="signup">Sign Up</button>
     </form>
 
     <?php if($message != ""): ?>
-        <div class="msg <?php echo ($message == 'Signup successful! You can login now.') ? 'success' : ''; ?>">
+        <div class="msg <?php echo ($message == 'Sign up successful! You can login now.') ? 'success' : ''; ?>">
             <?php echo $message; ?>
         </div>
     <?php endif; ?>

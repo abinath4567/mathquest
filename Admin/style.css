@@ -1,4 +1,4 @@
-/* GENERAL */
+
 body {
     font-family: 'Poppins', sans-serif;
     background: #e8f5e9;
@@ -42,7 +42,7 @@ nav a:hover {
     font-size: 1.1em;
 }
 
-/* BUTTON */
+
 .btn {
     display: inline-block;
     margin-top: 20px;
