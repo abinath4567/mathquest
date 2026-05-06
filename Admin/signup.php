@@ -13,7 +13,7 @@ if (isset($_POST['signup'])) {
     $password = trim($_POST['password']);
     
     // SET DEFAULT ROLE HERE
-    $role = "Student";
+    $role = "Admin";
 
     // Check if username already exists
     $check = "SELECT * FROM users WHERE username='$username'";
