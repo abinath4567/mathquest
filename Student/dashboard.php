@@ -42,6 +42,26 @@ body {
     100% { transform: translateY(-10vh); }
 }
 
+/* LOGOUT BUTTON */
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: #ff4d4d;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.logout:hover {
+    background: #e60000;
+    transform: scale(1.1);
+}
+
 /* HEADER */
 .header {
     text-align: center;
@@ -53,7 +73,7 @@ body {
     font-size: 2.5em;
 }
 
-/* CARD */
+/* CARD CONTAINER */
 .container {
     display: flex;
     justify-content: center;
@@ -99,6 +119,9 @@ body {
 
 <body>
 
+<!-- LOGOUT BUTTON -->
+<a href="logout.php" class="logout">🚪 Logout</a>
+
 <!-- FLOATING NUMBERS -->
 <div class="number" style="left:10%; animation-duration:12s;">1</div>
 <div class="number" style="left:30%; animation-duration:15s;">2</div>
@@ -107,8 +130,8 @@ body {
 <div class="number" style="left:85%; animation-duration:14s;">5</div>
 
 <div class="header">
-    <h1>Hi <?php echo $data['username']; ?> </h1>
-    <div class="points"> Points: <?php echo $data['points']; ?></div>
+    <h1>Hi <?php echo $data['username']; ?> 👋</h1>
+    <div class="points">⭐ Points: <?php echo $data['points']; ?></div>
 </div>
 
 <div class="container">
