@@ -26,7 +26,7 @@ if (isset($_POST['signup'])) {
                 VALUES ('$username', '$password', '$role')";
 
         if ($conn->query($sql) === TRUE) {
-            $message = "Signup successful! You can login now.";
+            $message = "Sign up successful! You can login now.";
         } else {
             $message = "Error: " . $conn->error;
         }
@@ -106,14 +106,6 @@ if (isset($_POST['signup'])) {
     <form method="POST">
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-
-        <select name="role" required>
-            <option value="">Select Role</option>
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-            <option value="Admin">Admin</option>
-            
-        </select>
 
         <button type="submit" name="sign up">Sign Up</button>
     </form>
