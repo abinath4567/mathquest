@@ -11,24 +11,34 @@ if (isset($_POST['signup'])) {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $role = $_POST['role'];
+    $role = isset($_POST['role']) ? $_POST['role'] : 'student';
 
-    // Check if username already exists
-    $check = "SELECT * FROM users WHERE username='$username'";
-    $result = $conn->query($check);
-
-    if ($result->num_rows > 0) {
-        $message = "Username already exists!";
+    // Validate input
+    if (empty($username) || empty($password)) {
+        $message = "Username and password required!";
+    } else if (strlen($password) < 6) {
+        $message = "Password must be at least 6 characters!";
     } else {
+        // Check if username already exists using prepared statement
+        $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
+        $check->bind_param("s", $username);
+        $check->execute();
+        $result = $check->get_result();
 
-        // Insert user
-        $sql = "INSERT INTO users (username, password, role)
-                VALUES ('$username', '$password', '$role')";
-
-        if ($conn->query($sql) === TRUE) {
-            $message = "Sign up successful! You can login now.";
+        if ($result->num_rows > 0) {
+            $message = "Username already exists!";
         } else {
-            $message = "Error: " . $conn->error;
+            // Hash password and insert user
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            
+            $sql = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
+            $sql->bind_param("sss", $username, $hashed_password, $role);
+
+            if ($sql->execute()) {
+                $message = "Sign up successful! You can login now.";
+            } else {
+                $message = "Error: " . $conn->error;
+            }
         }
     }
 }
@@ -106,8 +116,12 @@ if (isset($_POST['signup'])) {
     <form method="POST">
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
+        <select name="role" required>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select>
 
-        <button type="submit" name="sign up">Sign Up</button>
+        <button type="submit" name="signup">Sign Up</button>
     </form>
 
     <!-- Message -->
