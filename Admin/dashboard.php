@@ -83,7 +83,7 @@ $role = $_SESSION['role'];
         <a href="addstudent.php">Add Student</a>
         <a href="addteacher.php">Add Teacher</a>
         <a href="insertchallenges.php">Create Challenges</a>
-        <a href="insert rewards.php">Add Rewards</a>
+        <a href="insertrewards.php">Add Rewards</a>
     <?php endif; ?>
 
     <a href="logout.php">Logout</a>
