@@ -98,7 +98,7 @@ $role = $_SESSION['role'];
 <div class="main">
 
     <h1>Welcome, <?php echo $username; ?> 👋</h1>
-    <p>You are logged in as <b><?php echo ($role == 'teacher') ? 'admin' : $role; ?></b></p>
+    <p>You are logged in as <b>admin</b></p>
 
     <!-- Role-based content -->
     <?php if ($role == "Teacher"): ?>
