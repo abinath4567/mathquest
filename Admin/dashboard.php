@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
-$role = $_SESSION['admin'];
+$role = $_SESSION['role'];
 ?>
 
 <!DOCTYPE html>
