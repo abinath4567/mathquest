@@ -28,11 +28,9 @@ if (isset($_POST['signup'])) {
         if ($result->num_rows > 0) {
             $message = "Username already exists!";
         } else {
-            // Hash password and insert user
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
+            // Insert user with plain text password
             $sql = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
-            $sql->bind_param("sss", $username, $hashed_password, $role);
+            $sql->bind_param("sss", $username, $password, $role);
 
             if ($sql->execute()) {
                 $message = "Sign up successful! You can login now.";

@@ -27,8 +27,8 @@ if (isset($_POST['login'])) {
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             
-            // Verify password
-            if (password_verify($password, $user['password'])) {
+            // Check plain text password
+            if ($password == $user['password']) {
                 // Login successful - create session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
