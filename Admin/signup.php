@@ -11,7 +11,7 @@ if (isset($_POST['signup'])) {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $role = $_POST['admin'];
+    $role = $_POST['role'];
 
     // Check if username already exists
     $check = "SELECT * FROM users WHERE username='$username'";
@@ -106,8 +106,9 @@ if (isset($_POST['signup'])) {
     <form method="POST">
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-
-        <button type="submit" name="sign up">Sign Up</button>
+        <select name="role" required>
+        <option value="Admin">Admin</option>
+        <button type="submit" name="signup">Sign Up</button>
     </form>
 
     <!-- Message -->
