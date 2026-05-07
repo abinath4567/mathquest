@@ -1,3 +1,28 @@
+<?php
+session_start();
+include 'db.php';
+
+$error = "";
+
+if (isset($_POST['login'])) {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        $error = "Invalid username or password!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -38,6 +63,11 @@
         border: none;
         cursor: pointer;
     }
+
+    .msg {
+        margin-top: 10px;
+        color: red;
+    }
 </style>
 
 
@@ -48,21 +78,18 @@
 <div class="login-box">
     <h2>MathQuest Login</h2>
 
-```
-<input type="text" placeholder="Username">
-<input type="password" placeholder="Password">
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
 
-<button onclick="login()">Login</button>
-```
+        <button type="submit" name="login">Login</button>
+    </form>
+
+    <?php if($error != ""): ?>
+        <div class="msg"><?php echo $error; ?></div>
+    <?php endif; ?>
 
 </div>
-
-<script>
-    function login() {
-        // No checking, just go to dashboard
-        window.location.href = "student_dashboard.html";
-    }
-</script>
 
 </body>
 </html>
