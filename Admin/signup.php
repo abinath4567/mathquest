@@ -116,10 +116,6 @@ if (isset($_POST['signup'])) {
     <form method="POST">
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-        <select name="role" required>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-        </select>
 
         <button type="submit" name="signup">Sign Up</button>
     </form>
