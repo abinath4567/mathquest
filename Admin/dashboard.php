@@ -1,120 +1,244 @@
-<?php
-session_start();
-
-// If not logged in → go back
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit();
-}
-
-$username = $_SESSION['username'];
-$role = $_SESSION['role'];
-?>
-
 <!DOCTYPE html>
+
 <html>
+
 <head>
-    <title>Dashboard - MathQuest</title>
+    <title>Admin Dashboard</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            display: flex;
-            background-color: #ecf0f1;
-        }
+```
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        /* Sidebar */
-        .sidebar {
-            width: 220px;
-            background-color: rgb(44, 62, 80);
-            color: white;
-            height: 100vh;
-            padding: 20px;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background-color: #ecf0f1;
+    }
 
-        .sidebar h2 {
-            text-align: center;
-        }
+    /* SIDEBAR */
+    .sidebar {
+        width: 220px;
+        height: 100vh;
+        background-color: rgb(44, 62, 80);
+        position: fixed;
+        color: white;
+        padding-top: 20px;
+    }
 
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin: 15px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
+    .sidebar h2 {
+        text-align: center;
+    }
 
-        .sidebar a:hover {
-            background-color: rgb(52, 152, 219);
-        }
+    .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 15px;
+    }
 
-        /* Main */
-        .main {
-            flex: 1;
-            padding: 20px;
-            background: white;
-        }
+    .sidebar a:hover {
+        background-color: rgb(52, 73, 94);
+    }
 
-        h1 {
-            color: rgb(44, 62, 80);
-        }
+    /* MAIN CONTENT */
+    .main {
+        margin-left: 220px;
+        padding: 20px;
+    }
 
-        .card {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-    </style>
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: rgb(52, 152, 219);
+        color: white;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .pass {
+        color: green;
+        font-weight: bold;
+    }
+
+    .fail {
+        color: red;
+        font-weight: bold;
+    }
+
+    /* STAT BOXES */
+    .stats {
+        display: flex;
+        gap: 20px;
+    }
+
+    .stat-box {
+        flex: 1;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-box h3 {
+        margin: 0;
+        color: rgb(44, 62, 80);
+    }
+
+    canvas {
+        background: white;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+```
+
 </head>
 
 <body>
 
-<!-- Sidebar -->
+<!-- SIDEBAR -->
+
 <div class="sidebar">
     <h2>MathQuest</h2>
 
-    <a href="dashboard.php">Dashboard</a>
+```
+<a href="#">Dashboard</a>
+<a href="#">Students</a>
+<a href="#">Reports</a>
+<a href="login.html">Logout</a>
+```
 
-    <?php if ($role == "Teacher"): ?>
-        <a href="students.html">Manage Students</a>
-        <a href="reports.html">Reports</a>
-    <?php endif; ?>
-
-    <?php if ($role == "Student"): ?>
-        <a href="#">Play Game</a>
-        <a href="#">My Progress</a>
-    <?php endif; ?>
-
-    <a href="logout.php">Logout</a>
 </div>
 
-<!-- Main Content -->
+<!-- MAIN -->
+
 <div class="main">
 
-    <h1>Welcome, <?php echo $username; ?> 👋</h1>
-    <p>You are logged in as <b><?php echo $role; ?></b></p>
+```
+<h1>Admin Dashboard</h1>
 
-    <!-- Role-based content -->
-    <?php if ($role == "Teacher"): ?>
-        <div class="card">
-            <h2>Teacher Panel</h2>
-            <p>✔ View student performance</p>
-            <p>✔ Access reports and statistics</p>
-        </div>
-    <?php endif; ?>
+<!-- STATISTICS -->
+<div class="stats">
 
-    <?php if ($role == "Student"): ?>
-        <div class="card">
-            <h2>Student Panel</h2>
-            <p>🎮 Start your MathQuest journey!</p>
-            <p>🏆 Earn rewards and badges</p>
-        </div>
-    <?php endif; ?>
+    <div class="stat-box">
+        <h3>Total Students</h3>
+        <p>3</p>
+    </div>
+
+    <div class="stat-box">
+        <h3>Average Score</h3>
+        <p>66.7</p>
+    </div>
+
+    <div class="stat-box">
+        <h3>Pass Rate</h3>
+        <p>67%</p>
+    </div>
 
 </div>
+
+<!-- TABLE -->
+<div class="card">
+    <h2>Student Performance</h2>
+
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Score</th>
+            <th>Status</th>
+        </tr>
+
+        <tr>
+            <td>Ali</td>
+            <td>85</td>
+            <td class="pass">Pass</td>
+        </tr>
+
+        <tr>
+            <td>Brian</td>
+            <td>45</td>
+            <td class="fail">Fail</td>
+        </tr>
+
+        <tr>
+            <td>Chong</td>
+            <td>70</td>
+            <td class="pass">Pass</td>
+        </tr>
+    </table>
+</div>
+
+<!-- BAR CHART -->
+<div class="card">
+    <h2>Student Scores</h2>
+    <canvas id="barChart"></canvas>
+</div>
+
+<!-- PIE CHART -->
+<div class="card">
+    <h2>Pass vs Fail</h2>
+    <canvas id="pieChart"></canvas>
+</div>
+```
+
+</div>
+
+<script>
+
+    // BAR CHART
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+
+        data: {
+            labels: ["Ali", "Brian", "Chong"],
+
+            datasets: [{
+                label: "Scores",
+                data: [85, 45, 70],
+                backgroundColor: [
+                    "green",
+                    "red",
+                    "green"
+                ]
+            }]
+        }
+    });
+
+    // PIE CHART
+    new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+
+        data: {
+            labels: ["Pass", "Fail"],
+
+            datasets: [{
+                data: [2, 1],
+
+                backgroundColor: [
+                    "green",
+                    "red"
+                ]
+            }]
+        }
+    });
+
+</script>
 
 </body>
 </html>
