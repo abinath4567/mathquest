@@ -11,7 +11,7 @@ if (isset($_POST['signup'])) {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $role = $_POST['role'];
+    $role = $_POST['Admin'];
 
     // Check if username already exists
     $check = "SELECT * FROM users WHERE username='$username'";
@@ -22,8 +22,8 @@ if (isset($_POST['signup'])) {
     } else {
 
         // Insert user
-        $sql = "INSERT INTO users (username, password, role)
-                VALUES ('$username', '$password', '$role')";
+        $sql = "INSERT INTO users (username, password, Admin)
+                VALUES ('$username', '$password', '$Admin')";
 
         if ($conn->query($sql) === TRUE) {
             $message = "Sign up successful! You can login now.";
