@@ -3,13 +3,11 @@
 <html>
 
 <head>
-    <title>Admin Dashboard</title>
+    <title>MathQuest Admin Dashboard</title>
 
 ```
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
+
     body {
         margin: 0;
         font-family: Arial;
@@ -54,34 +52,7 @@
         margin-bottom: 20px;
     }
 
-    /* TABLE */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th {
-        background-color: rgb(52, 152, 219);
-        color: white;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    .pass {
-        color: green;
-        font-weight: bold;
-    }
-
-    .fail {
-        color: red;
-        font-weight: bold;
-    }
-
-    /* STAT BOXES */
+    /* STATISTICS */
     .stats {
         display: flex;
         gap: 20px;
@@ -100,11 +71,33 @@
         color: rgb(44, 62, 80);
     }
 
-    canvas {
-        background: white;
-        border-radius: 10px;
-        padding: 10px;
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
     }
+
+    th {
+        background-color: rgb(52,152,219);
+        color: white;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .pass {
+        color: green;
+        font-weight: bold;
+    }
+
+    .fail {
+        color: red;
+        font-weight: bold;
+    }
+
 </style>
 ```
 
@@ -115,9 +108,10 @@
 <!-- SIDEBAR -->
 
 <div class="sidebar">
-    <h2>MathQuest</h2>
 
 ```
+<h2>MathQuest</h2>
+
 <a href="#">Dashboard</a>
 <a href="#">Students</a>
 <a href="#">Reports</a>
@@ -126,7 +120,7 @@
 
 </div>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 
 <div class="main">
 
@@ -153,11 +147,15 @@
 
 </div>
 
-<!-- TABLE -->
+<br>
+
+<!-- STUDENT TABLE -->
 <div class="card">
+
     <h2>Student Performance</h2>
 
     <table>
+
         <tr>
             <th>Student Name</th>
             <th>Score</th>
@@ -181,64 +179,13 @@
             <td>70</td>
             <td class="pass">Pass</td>
         </tr>
+
     </table>
-</div>
 
-<!-- BAR CHART -->
-<div class="card">
-    <h2>Student Scores</h2>
-    <canvas id="barChart"></canvas>
-</div>
-
-<!-- PIE CHART -->
-<div class="card">
-    <h2>Pass vs Fail</h2>
-    <canvas id="pieChart"></canvas>
 </div>
 ```
 
 </div>
-
-<script>
-
-    // BAR CHART
-    new Chart(document.getElementById("barChart"), {
-        type: 'bar',
-
-        data: {
-            labels: ["Ali", "Brian", "Chong"],
-
-            datasets: [{
-                label: "Scores",
-                data: [85, 45, 70],
-                backgroundColor: [
-                    "green",
-                    "red",
-                    "green"
-                ]
-            }]
-        }
-    });
-
-    // PIE CHART
-    new Chart(document.getElementById("pieChart"), {
-        type: 'pie',
-
-        data: {
-            labels: ["Pass", "Fail"],
-
-            datasets: [{
-                data: [2, 1],
-
-                backgroundColor: [
-                    "green",
-                    "red"
-                ]
-            }]
-        }
-    });
-
-</script>
 
 </body>
 </html>
