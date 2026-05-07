@@ -8,7 +8,7 @@ if (isset($_POST['login'])) {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND role='teacher'";
+    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND role='Admin'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
