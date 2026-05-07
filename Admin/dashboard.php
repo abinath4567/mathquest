@@ -79,8 +79,11 @@ $role = $_SESSION['role'];
     <a href="dashboard.php">Dashboard</a>
 
     <?php if ($role == "Teacher"): ?>
-        <a href="students.html">Manage Students</a>
-        <a href="reports.html">Reports</a>
+        <a href="insertstudents.php">Manage Students</a>
+        <a href="addteacher.php">Add Teacher</a>
+        <a href="insertchallenges.php">Manage Challenges</a>
+        <a href="leaderboards.php">Leaderboards</a>
+        <a href="insert rewards.php">Insert Rewards</a>
     <?php endif; ?>
 
     <?php if ($role == "Student"): ?>

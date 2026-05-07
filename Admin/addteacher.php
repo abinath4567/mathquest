@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +57,8 @@
 
 <div class="form-container">
     <h2>Add Teacher</h2>
+
+    <a href="dashboard.php" style="display: block; margin-bottom: 20px; color: blue; text-decoration: none;">← Back to Dashboard</a>
 
     <form onsubmit="addTeacher(event)">
         <input type="text" id="name" placeholder="Enter teacher name" required>

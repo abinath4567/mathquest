@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,6 +84,8 @@
 <body>
 
 <h1>📐 MathQuest Rewards</h1>
+
+<a href="dashboard.php" style="display: block; margin-bottom: 20px; color: #185a9d; text-decoration: none;">← Back to Dashboard</a>
 
 <div class="container">
     <h3>Add New Reward</h3>
