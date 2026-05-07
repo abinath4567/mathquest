@@ -77,15 +77,13 @@ $role = $_SESSION['role'];
     <h2>MathQuest</h2>
 
     <a href="dashboard.php">Dashboard</a>
+    <a href="leaderboards.php">Leaderboards</a>
 
-    <?php if ($role == "Teacher"): ?>
-        <a href="students.html">Manage Students</a>
-        <a href="reports.html">Reports</a>
-    <?php endif; ?>
-
-    <?php if ($role == "Student"): ?>
-        <a href="#">Play Game</a>
-        <a href="#">My Progress</a>
+    <?php if ($role == "teacher"): ?>
+        <a href="addstudent.php">Add Student</a>
+        <a href="addteacher.php">Add Teacher</a>
+        <a href="insertchallenges.php">Create Challenges</a>
+        <a href="insert rewards.php">Add Rewards</a>
     <?php endif; ?>
 
     <a href="logout.php">Logout</a>
