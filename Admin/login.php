@@ -60,7 +60,7 @@
 <script>
     function login() {
         // No checking, just go to dashboard
-        window.location.href = "student_dashboard.html";
+        window.location.href = "dashboard.php";
     }
 </script>
 
