@@ -78,7 +78,7 @@ $role = $_SESSION['role'];
 
     <a href="dashboard.php">Dashboard</a>
 
-    <?php if ($role == "Teacher"): ?>
+    <?php if ($role == "Admin"): ?>
         <a href="insertstudents.php">Manage Students</a>
         <a href="addteacher.php">Add Teacher</a>
         <a href="insertchallenges.php">Manage Challenges</a>
@@ -101,9 +101,9 @@ $role = $_SESSION['role'];
     <p>You are logged in as Admin</p>
 
     <!-- Role-based content -->
-    <?php if ($role == "Teacher"): ?>
+    <?php if ($role == "Admin"): ?>
         <div class="card">
-            <h2>Teacher Panel</h2>
+            <h2>Admin Panel</h2>
             <p>✔ View student performance</p>
             <p>✔ Access reports and statistics</p>
         </div>
