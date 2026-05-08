@@ -85,10 +85,6 @@ if (isset($_POST['login'])) {
         <button type="submit" name="login">Login</button>
     </form>
 
-    <div style="margin-top: 15px; font-size: 14px; color: #555;">
-        Can't login? <a href="signup.php" style="color: rgb(52,152,219); text-decoration: none;">Sign up</a>
-    </div>
-
     <?php if($error != ""): ?>
         <div class="msg"><?php echo $error; ?></div>
     <?php endif; ?>
