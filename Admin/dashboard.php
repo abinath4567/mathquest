@@ -77,13 +77,18 @@ $role = $_SESSION['role'];
     <h2>MathQuest</h2>
 
     <a href="dashboard.php">Dashboard</a>
-    <a href="leaderboards.php">Leaderboards</a>
 
-    <?php if ($role == "teacher"): ?>
-        <a href="addstudent.php">Add Student</a>
+    <?php if ($role == "Admin"): ?>
+        <a href="insertstudents.php">Manage Students</a>
         <a href="addteacher.php">Add Teacher</a>
-        <a href="insertchallenges.php">Create Challenges</a>
-        <a href="insertrewards.php">Add Rewards</a>
+        <a href="insertchallenges.php">Manage Challenges</a>
+        <a href="leaderboards.php">Leaderboards</a>
+        <a href="insertrewards.php">Insert Rewards</a>
+    <?php endif; ?>
+
+    <?php if ($role == "Student"): ?>
+        <a href="#">Play Game</a>
+        <a href="#">My Progress</a>
     <?php endif; ?>
 
     <a href="logout.php">Logout</a>
@@ -93,12 +98,12 @@ $role = $_SESSION['role'];
 <div class="main">
 
     <h1>Welcome, <?php echo $username; ?> 👋</h1>
-    <p>You are logged in as <b><?php echo $role; ?></b></p>
+    <p>You are logged in as Admin</p>
 
     <!-- Role-based content -->
-    <?php if ($role == "Teacher"): ?>
+    <?php if ($role == "Admin"): ?>
         <div class="card">
-            <h2>Teacher Panel</h2>
+            <h2>Admin Panel</h2>
             <p>✔ View student performance</p>
             <p>✔ Access reports and statistics</p>
         </div>

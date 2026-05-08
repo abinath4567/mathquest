@@ -11,32 +11,24 @@ if (isset($_POST['signup'])) {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $role = isset($_POST['role']) ? $_POST['role'] : 'student';
+    $role = "Admin";
 
-    // Validate input
-    if (empty($username) || empty($password)) {
-        $message = "Username and password required!";
-    } else if (strlen($password) < 6) {
-        $message = "Password must be at least 6 characters!";
+    // Check if username already exists
+    $check = "SELECT * FROM users WHERE username='$username'";
+    $result = $conn->query($check);
+
+    if ($result->num_rows > 0) {
+        $message = "Username already exists!";
     } else {
-        // Check if username already exists using prepared statement
-        $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
-        $check->bind_param("s", $username);
-        $check->execute();
-        $result = $check->get_result();
 
-        if ($result->num_rows > 0) {
-            $message = "Username already exists!";
+        // Insert user
+        $sql = "INSERT INTO users (username, password, role)
+                VALUES ('$username', '$password', '$role')";
+
+        if ($conn->query($sql) === TRUE) {
+            $message = "Sign up successful! You can login now.";
         } else {
-            // Insert user with plain text password
-            $sql = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
-            $sql->bind_param("sss", $username, $password, $role);
-
-            if ($sql->execute()) {
-                $message = "Sign up successful! You can login now.";
-            } else {
-                $message = "Error: " . $conn->error;
-            }
+            $message = "Error: " . $conn->error;
         }
     }
 }
@@ -114,7 +106,6 @@ if (isset($_POST['signup'])) {
     <form method="POST">
         <input type="text" name="username" placeholder="Enter Username" required>
         <input type="password" name="password" placeholder="Enter Password" required>
-
         <button type="submit" name="signup">Sign Up</button>
     </form>
 
