@@ -52,7 +52,6 @@
     <p>Learn Math the Fun Way!</p>
 
     <a href="login.php" class="btn">Login</a>
-    <a href="signup.php" class="btn">Sign Up</a>
 </div>
 
 </body>
