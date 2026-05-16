@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 
 // If not logged in → go back
