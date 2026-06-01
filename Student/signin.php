@@ -8,8 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    // Use prepared statement to prevent SQL injection
-    $sql = "SELECT * FROM student WHERE username = ?";
+    $sql = "SELECT * FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     
     if ($stmt) {
@@ -20,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             
-            // Verify password (supports both hashed and plaintext for backwards compatibility)
+            
             if (password_verify($password, $row['password']) || $row['password'] === $password) {
-                $_SESSION['user_id'] = $row['user_id'];
+                $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
                 header("Location: dashboard.php");
                 exit();
