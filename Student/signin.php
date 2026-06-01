@@ -5,19 +5,36 @@ session_start();
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    $sql = "SELECT * FROM student WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($conn, $sql);
+    // Use prepared statement to prevent SQL injection
+    $sql = "SELECT * FROM student WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    
+    if ($stmt) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        $_SESSION['user_id'] = $row['user_id'];
-        header("Location: Dashboard.php");
-        exit();
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            
+            // Verify password (supports both hashed and plaintext for backwards compatibility)
+            if (password_verify($password, $row['password']) || $row['password'] === $password) {
+                $_SESSION['user_id'] = $row['user_id'];
+                $_SESSION['username'] = $row['username'];
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $error = "Invalid username or password!";
+            }
+        } else {
+            $error = "Invalid username or password!";
+        }
+        $stmt->close();
     } else {
-        $error = "Invalid username or password!";
+        $error = "Database error. Please try again.";
     }
 }
 ?>
